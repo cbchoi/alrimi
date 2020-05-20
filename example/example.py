@@ -11,6 +11,8 @@ from selenium.common.exceptions import TimeoutException
 
 from urllib import parse
 
+from instance.credential import *
+
 # 게시판 글 읽기
 #browser.get(f"https://hisnet.handong.edu/cis/list.php?Board=KYOM_EXTRA&CateCode=2959")
 
@@ -59,8 +61,8 @@ options.headless = False
 browser = webdriver.Chrome(executable_path="./chromedriver.exe", options=options)
 browser.get("https://hisnet.handong.edu/login/login.php")
 
-browser.find_element_by_name('id').send_keys('loveetls')
-browser.find_element_by_name('password').send_keys('sit32004')
+browser.find_element_by_name('id').send_keys(LOGIN_ID)
+browser.find_element_by_name('password').send_keys(LOGIN_PW)
 browser.find_element_by_name('login').submit()
 browser.implicitly_wait(3)
 

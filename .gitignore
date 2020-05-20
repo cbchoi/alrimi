@@ -167,3 +167,5 @@ $RECYCLE.BIN/
 venv
 instance
 *.exe
+chromedriver
+
