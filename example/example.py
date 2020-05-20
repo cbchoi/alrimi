@@ -64,4 +64,4 @@ browser.find_element_by_name('password').send_keys('sit32004')
 browser.find_element_by_name('login').submit()
 browser.implicitly_wait(3)
 
-post_thread(browser, "ICT Application Development", "Hello, World!!")
+post_thread(browser, "nice", "Hello, World!!")
