@@ -19,7 +19,7 @@ cur_dir = cur_dir.resolve()
 # update. Error handlers also receive the raised TelegramError object in error.
 def start(update, context):
     """Send a message when the command /start is issued."""
-    update.message.reply_text('Hi!')
+    update.message.reply_text('아이디를 입력해주세요.')
 
 
 def help(update, context):
@@ -99,6 +99,7 @@ def main():
     # log all errors
     dp.add_error_handler(error)
 
+    updater.bot.send_message(1235556245, 'abcd')
     # Start the Bot
     updater.start_polling()
 
