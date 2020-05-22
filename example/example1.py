@@ -16,6 +16,7 @@ from selenium.common.exceptions import TimeoutException
 
 from urllib import parse
 from instance.credential import *
+import mongo 
 
 options = Options()
 options.headless = False
@@ -48,7 +49,10 @@ def list(browser):
 	notice = browser.find_element_by_xpath('//*[@id="tr_box_32"]/table/tbody')
 	time.sleep(1)
 	print(notice.text)
-	search = '//input[@name="email_address"]'
+
+	return notice.text
+
+	
 	
 
 # 과제정보
@@ -59,6 +63,9 @@ def HW(browser):
 	hw = browser.find_element_by_xpath('//*[@id="tr_box_34"]/table/tbody')
 	time.sleep(2)
 	print(hw.text)
+
+	return hw.text
+
 
 # 과제 상세리스트
 def HW_all(browser):
@@ -83,7 +90,10 @@ def list_all(browser):
 	print(notice_d1.text)
 
 #browser.find_element_by_class_name(cls_AlignLeft listBody)
-
+def mondb(list, hw):
+	mongo.collection.insert_one({'게시판':list}, {'과제':hw})
+	result = mongo.collection.find()
+	[print(result) for result in result]
 
 # 쿠키 지우기
 def end(browser):
@@ -100,5 +110,7 @@ def main(browser):
 	HW(browser)
 	HW_all(browser)
 	end(browser)
+	mondb(list(browser),HW(browser))
 
-#main(browser)
+
+main(browser)
