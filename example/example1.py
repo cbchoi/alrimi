@@ -16,6 +16,7 @@ from selenium.common.exceptions import TimeoutException
 
 from urllib import parse
 from instance.credential import *
+import mongo 
 
 options = Options()
 options.headless = False
@@ -48,8 +49,15 @@ def list(browser):
 	notice = browser.find_element_by_xpath('//*[@id="tr_box_32"]/table/tbody')
 	time.sleep(1)
 	print(notice.text)
+<<<<<<< HEAD
 	
 	return notice.text
+=======
+
+	return notice.text
+
+	
+>>>>>>> 86fa77c87f94a8a61f4cda28ed0dab37afb6dc32
 	
 
 # 과제정보
@@ -63,6 +71,10 @@ def HW(browser):
 
 	return hw.text
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 86fa77c87f94a8a61f4cda28ed0dab37afb6dc32
 # 과제 상세리스트
 def HW_all(browser):
 	browser.get("https://hisnet.handong.edu/for_student/main.php")
@@ -116,5 +128,9 @@ def main(browser):
 	HW_all(browser)
 	end(browser)
 	mondb(list(browser),HW(browser))
+<<<<<<< HEAD
+=======
+
+>>>>>>> 86fa77c87f94a8a61f4cda28ed0dab37afb6dc32
 
 main(browser)

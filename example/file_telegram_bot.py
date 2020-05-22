@@ -1,10 +1,15 @@
 import logging
+import pymongo
+
 #import example1
 
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 from instance.credential import *
-import mongo
+
+conn = pymongo.MongoClient('mongodb://localhost:27017')
+db = conn.get_database('mongo_db')
+collection = db.get_collection('customer')
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -23,6 +28,7 @@ cur_dir = cur_dir.resolve()
 def start(update, context):
     """Send a message when the command /start is issued."""
     update.message.reply_text("아이디를 입력해주세요. ex) /id ")
+
 '''
 def id(update, context):
     LOGIN_ID = update.message.Get()
@@ -36,13 +42,24 @@ def pw(update, context):
     """Send a message when the command /help is issued."""
     update.message.reply_text('Help!')'''
 
+
+
 def ids(update, context,):
+<<<<<<< HEAD
     idf = mongo.collection.find({"id" : {"$eq":update.message.text}})
 
     [print(mongo.results) for mongo.results in mongo.results]
     #else:
      #   mongo.collection.insert_one({'id': update.message.text, 'pw': ' '})
     #print(update.message.chat_id)
+=======
+    idf = collection.find_one({"id" : {"$eq":update.message.text}})
+    if idf != None:
+        print(idf["id"])
+    else:
+        collection.insert_one({'id': update.message.text})
+        print("hi")
+>>>>>>> 86fa77c87f94a8a61f4cda28ed0dab37afb6dc32
 
 def echo(update, context):
     """Echo the user message."""
@@ -56,10 +73,7 @@ def error(update, context):
 
 
 def _list(update, context):
-    global cur_dir
-    lst = [str(x) for x in cur_dir.iterdir()]
-    lst = "\n".join(lst)
-    update.message.reply_text(lst)
+    update.message.reply_text(mong)
 
 def _parent(update, context):
     global cur_dir
