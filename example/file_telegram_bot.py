@@ -1,4 +1,6 @@
 import logging
+#import example1
+
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 from instance.credential import *
@@ -19,9 +21,16 @@ cur_dir = cur_dir.resolve()
 # update. Error handlers also receive the raised TelegramError object in error.
 def start(update, context):
     """Send a message when the command /start is issued."""
-    update.message.reply_text('아이디를 입력해주세요.')
+    update.message.reply_text("아이디를 입력해주세요. ex) /id 아이디 ")
+'''
+def id(update, context):
+    LOGIN_ID = update.message.Get()
+    update.message.reply_text("비밀번호를 입력해주세요. ex) /pw 비밀번호 ")
 
-
+def pw(update, context):
+    LOGIN_PW = update.message.Get()
+    update.message.reply_text("성공적입니다.")
+'''
 def help(update, context):
     """Send a message when the command /help is issued."""
     update.message.reply_text('Help!')
@@ -30,6 +39,7 @@ def help(update, context):
 def echo(update, context):
     """Echo the user message."""
     print(update.message.chat_id)
+    ff = update.message.text
     update.message.reply_text(update.message.text)
 
 
@@ -92,6 +102,8 @@ def main():
     dp.add_handler(CommandHandler("parent", _parent))
     dp.add_handler(CommandHandler("select", _select))
     dp.add_handler(CommandHandler("send", _send))
+    #dp.add_handler(CommandHandler("id", id))
+    #dp.add_handler(CommandHandler("pw", pw))
 
     # on noncommand i.e message - echo the message on Telegram
     dp.add_handler(MessageHandler(Filters.text, echo))

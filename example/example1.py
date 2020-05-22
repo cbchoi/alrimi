@@ -1,4 +1,5 @@
 import time
+#import file_telegram_bot
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -23,27 +24,29 @@ browser = webdriver.Chrome(executable_path="./chromedriver.exe", options=options
 browser.get("https://hisnet.handong.edu/login/login.php")
 
 # python_input.py
-LOGIN_ID = input("아이디를 입력해주세요.")
-LOGIN_PW = input("비밀번호를 입력해주세요.")
+#LOGIN_ID = input("아이디를 입력해주세요.")
+#LOGIN_PW = input("비밀번호를 입력해주세요.")
 
-print("{name}님 환영합니다.".format(name=LOGIN_ID))
+#print("{name}님 환영합니다.".format(name=LOGIN_ID))
 
-browser.find_element_by_name('id').send_keys(LOGIN_ID)
-browser.implicitly_wait(3)
-time.sleep(2)
-browser.find_element_by_name('password').send_keys(LOGIN_PW)
-browser.implicitly_wait(3)
-time.sleep(2)
-browser.find_element_by_name('login').submit()
-browser.implicitly_wait(3)
+def first(LOGIN_ID, LOGIN_PW):
+	print('!!!')
+	browser.find_element_by_name('id').send_keys(LOGIN_ID)
+	browser.implicitly_wait(3)
+	time.sleep(1)
+	browser.find_element_by_name('password').send_keys(LOGIN_PW)
+	browser.implicitly_wait(3)
+	time.sleep(1)
+	browser.find_element_by_name('login').submit()
+	browser.implicitly_wait(3)
 
 # 게시판 글 읽기
 def list(browser):
 	browser.get("https://hisnet.handong.edu/for_student/main.php")
-	time.sleep(2)
+	time.sleep(1)
 	browser.find_element_by_xpath('//*[@id="td_box32"]').click()
 	notice = browser.find_element_by_xpath('//*[@id="tr_box_32"]/table/tbody')
-	time.sleep(2)
+	time.sleep(1)
 	print(notice.text)
 	search = '//input[@name="email_address"]'
 	
@@ -91,14 +94,11 @@ def end(browser):
 #/html/body/table[1]/tbody/tr[2]/td/table/tbody/tr/td[3]/table/tbody/tr[4]/td/table/tbody/tr[1]
 
 def main(browser):
-	z = input("최근 공지사항 = list입력 / 모든 공지사항 =  list_all입력 / 최근 과제 = HW입력 / 모든 과제 = HW_all 입력")
-	if z == 'list':
-		list(browser)
-	elif z == 'list_all':
-		list_all(browser)
-	elif z == 'HW':
-		HW(browser)
-	elif z == 'HW_all':
-		HW_all(browser)
+	first('loveetls', 'sit32004')
+	list(browser)
+	list_all(browser)
+	HW(browser)
+	HW_all(browser)
+	end(browser)
 
-main(browser)
+#main(browser)
