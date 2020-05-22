@@ -29,12 +29,12 @@ browser.get("https://hisnet.handong.edu/login/login.php")
 
 #print("{name}님 환영합니다.".format(name=LOGIN_ID))
 
-def first(LOGIN_ID, LOGIN_PW):
+def first():
 	print('!!!')
-	browser.find_element_by_name('id').send_keys(LOGIN_ID)
+	browser.find_element_by_name('id').send_keys()
 	browser.implicitly_wait(3)
 	time.sleep(1)
-	browser.find_element_by_name('password').send_keys(LOGIN_PW)
+	browser.find_element_by_name('password').send_keys()
 	browser.implicitly_wait(3)
 	time.sleep(1)
 	browser.find_element_by_name('login').submit()
@@ -48,15 +48,9 @@ def list(browser):
 	notice = browser.find_element_by_xpath('//*[@id="tr_box_32"]/table/tbody')
 	time.sleep(1)
 	print(notice.text)
-<<<<<<< HEAD
 	
 	return notice.text
-=======
 
-	return notice.text
-
-	
->>>>>>> 86fa77c87f94a8a61f4cda28ed0dab37afb6dc32
 	
 
 # 과제정보
@@ -70,10 +64,6 @@ def HW(browser):
 
 	return hw.text
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 86fa77c87f94a8a61f4cda28ed0dab37afb6dc32
 # 과제 상세리스트
 def HW_all(browser):
 	browser.get("https://hisnet.handong.edu/for_student/main.php")
@@ -127,9 +117,5 @@ def main(browser):
 	HW_all(browser)
 	end(browser)
 	mondb(list(browser),HW(browser))
-<<<<<<< HEAD
-=======
-
->>>>>>> 86fa77c87f94a8a61f4cda28ed0dab37afb6dc32
 
 main(browser)

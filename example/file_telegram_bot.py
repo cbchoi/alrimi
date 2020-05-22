@@ -25,41 +25,28 @@ cur_dir = cur_dir.resolve()
 
 # Define a few command handlers. These usually take the two arguments bot and
 # update. Error handlers also receive the raised TelegramError object in error.
+def go(update, context):
+    update.message.reply_text('아이디와 비밀번호를 입력해 주세요. ex) /start id pw')
+
 def start(update, context):
     """Send a message when the command /start is issued."""
-    update.message.reply_text("아이디를 입력해주세요. ex) /id ")
-
-'''
-def id(update, context):
-    LOGIN_ID = update.message.Get()
-    update.message.reply_text("비밀번호를 입력해주세요. ex) /pw 비밀번호 ")
-
-def pw(update, context):
-    LOGIN_PW = update.message.Get()
-    update.message.reply_text("성공적입니다.")
-'''
-'''def help(update, context):
-    """Send a message when the command /help is issued."""
-    update.message.reply_text('Help!')'''
-
-
-
-def ids(update, context,):
-<<<<<<< HEAD
-    idf = mongo.collection.find({"id" : {"$eq":update.message.text}})
-
-    [print(mongo.results) for mongo.results in mongo.results]
-    #else:
-     #   mongo.collection.insert_one({'id': update.message.text, 'pw': ' '})
-    #print(update.message.chat_id)
-=======
-    idf = collection.find_one({"id" : {"$eq":update.message.text}})
-    if idf != None:
-        print(idf["id"])
+    info = update.message.text
+    info_1 = info.split(' ')
+    print(info_1)
+    idi = collection.find_one({"id" : {"$eq":info_1[1]}})
+    if idi != None:
+        print(idi["id"])
     else:
-        collection.insert_one({'id': update.message.text})
+        collection.insert_one({'id': info_1[1]})
         print("hi")
->>>>>>> 86fa77c87f94a8a61f4cda28ed0dab37afb6dc32
+
+    idp = collection.find_one({"pw" : {"$eq":info_1[2]}})
+    if idp != None:
+        print(idp["pw"])
+    else:
+        collection.insert_one({'pw': info_1[2]})
+        print("ho")
+
 
 def echo(update, context):
     """Echo the user message."""
@@ -73,7 +60,7 @@ def error(update, context):
 
 
 def _list(update, context):
-    update.message.reply_text(mong)
+    update.message.reply_text(collection.find_one({'내용'}))
 
 def _parent(update, context):
     global cur_dir
@@ -117,6 +104,7 @@ def main():
     dp = updater.dispatcher
 
     # on different commands - answer in Telegram
+    dp.add_handler(CommandHandler("go", go))
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("help", help))
     dp.add_handler(CommandHandler("list", _list))
@@ -127,12 +115,12 @@ def main():
     #dp.add_handler(CommandHandler("pw", pw))
 
     # on noncommand i.e message - echo the message on Telegram
-    dp.add_handler(MessageHandler(Filters.text, ids))
+    dp.add_handler(MessageHandler(Filters.text, echo))
 
     # log all errors
     dp.add_error_handler(error)
 
-    updater.bot.send_message(1235556245, 'abcd')
+    updater.bot.send_message(1235556245, '111')
     # Start the Bot
     updater.start_polling()
 
