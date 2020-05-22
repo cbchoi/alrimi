@@ -31,16 +31,36 @@ def go(update, context):
 
 def start(update, context):
     """Send a message when the command /start is issued."""
+<<<<<<< HEAD
+    update.message.reply_text("아이디를 입력해주세요. ex) /id ")
+    idi = collection.find_one({"id" : {"$eq":update.message.text}})
+    if idf != None:
+        print(idf["id"])
+=======
     info = update.message.text
     info_1 = info.split(' ')
     print(info_1)
     idi = collection.find_one({"id" : {"$eq":info_1[1]}})
     if idi != None:
         print(idi["id"])
+>>>>>>> f81cb1a6d6f34ce918f80384f612995c8d7a8047
     else:
         collection.insert_one({'id': info_1[1]})
         print("hi")
 
+<<<<<<< HEAD
+    update.message.reply_text("비밀번호를 입력해주세요. ex) /pw 비밀번호 ")
+    idp = collection.find_one({"pw" : {"$eq":update.message.text}})
+    if idf != None:
+        print(idf["pw"])
+    else:
+        collection.insert_one({'pw': update.message.text})
+        print("ho")
+
+def help(update, context):
+    """Send a message when the command /help is issued."""
+    update.message.reply_text('Help!')
+=======
     idp = collection.find_one({"pw" : {"$eq":info_1[2]}})
     if idp != None:
         print(idp["pw"])
@@ -48,6 +68,7 @@ def start(update, context):
         collection.insert_one({'pw': info_1[2]})
         print("ho")
 
+>>>>>>> f81cb1a6d6f34ce918f80384f612995c8d7a8047
 
 def echo(update, context):
     """Echo the user message."""
@@ -61,6 +82,7 @@ def error(update, context):
 
 
 def _list(update, context):
+<<<<<<< HEAD
     example1.main()
     update.message.reply_text(collection.find_one({'게시판'}))
 
@@ -68,6 +90,13 @@ def _HW(update, context):
     update.message.reply_text(collection.find_one({'과제'}))
     example1.main()
 
+=======
+<<<<<<< HEAD
+    update.message.reply_text(collection.find_one({"내용"}))
+=======
+    update.message.reply_text(collection.find_one({'내용'}))
+>>>>>>> f81cb1a6d6f34ce918f80384f612995c8d7a8047
+>>>>>>> b2e8ebe089b09f8f5ebdf9259fb2c1582d10d3d5
 
 def _parent(update, context):
     global cur_dir
