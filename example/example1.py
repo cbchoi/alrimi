@@ -1,5 +1,5 @@
 import time
-#import file_telegram_bot
+import mongo
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -48,7 +48,8 @@ def list(browser):
 	notice = browser.find_element_by_xpath('//*[@id="tr_box_32"]/table/tbody')
 	time.sleep(1)
 	print(notice.text)
-	search = '//input[@name="email_address"]'
+	
+	return notice.text
 	
 
 # 과제정보
@@ -59,6 +60,8 @@ def HW(browser):
 	hw = browser.find_element_by_xpath('//*[@id="tr_box_34"]/table/tbody')
 	time.sleep(2)
 	print(hw.text)
+
+	return hw.text
 
 # 과제 상세리스트
 def HW_all(browser):
@@ -79,11 +82,23 @@ def list_all(browser):
 	time.sleep(2)
 	browser.find_element_by_xpath('/html/body/table[2]/tbody/tr/td[3]/table/tbody/tr[1]/td[2]').click()
 	time.sleep(2)
+	number = browser.find_element_by_xpath('/html/body/table[1]/tbody/tr[2]/td/table/tbody/tr/td[3]/table/tbody/tr[4]/td/table/tbody/tr[4]/td/table/tbody')
+	number_text = number.text
+	number_list = number_text.split('ㆍ 0')
+	print(number_list)
+	for i in number_list:
+		browser.get(f"https://hisnet.handong.edu/cis/list.php?dflag=&Page={i}&Board=KYOM_NOTICE&CIS_GWAMOK=&AG=1")
+		notice_d1 = browser.find_element_by_xpath('/html/body/table[1]/tbody/tr[2]/td/table/tbody/tr/td[3]/table/tbody/tr[4]/td/table/tbody/tr[1]')
+		print(notice_d1.text)
+	#https://hisnet.handong.edu/cis/list.php?dflag=&Page=1&Board=KYOM_NOTICE&CIS_GWAMOK=&AG=1
 	notice_d1 = browser.find_element_by_xpath('/html/body/table[1]/tbody/tr[2]/td/table/tbody/tr/td[3]/table/tbody/tr[4]/td/table/tbody/tr[1]')
 	print(notice_d1.text)
 
 #browser.find_element_by_class_name(cls_AlignLeft listBody)
-
+def mondb(list, hw):
+	mongo.collection.insert_one({'게시판':list}, {'과제':hw})
+	result = mongo.collection.find()
+	[print(result) for result in result]
 
 # 쿠키 지우기
 def end(browser):
@@ -100,5 +115,6 @@ def main(browser):
 	HW(browser)
 	HW_all(browser)
 	end(browser)
+	mondb(list(browser),HW(browser))
 
-#main(browser)
+main(browser)

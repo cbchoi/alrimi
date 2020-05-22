@@ -6,9 +6,7 @@ conn = pymongo.MongoClient('mongodb://localhost:27017')
 db = conn.get_database('mongo_db')
 collection = db.get_collection('customer')
 
-#collection.insert_one({'id':LOGIN_ID, 'pw':LOGIN_PW})
-
-i = collection.find({"id" : LOGIN_ID})
+collection.insert_one({'id':LOGIN_ID, 'pw':LOGIN_PW})
 
 results = collection.find()
 

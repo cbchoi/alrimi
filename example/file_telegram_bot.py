@@ -38,8 +38,7 @@ def pw(update, context):
 
 def ids(update, context,):
     idf = mongo.collection.find({"id" : {"$eq":update.message.text}})
-    if idf == True:
-        #print(idf)
+
     [print(mongo.results) for mongo.results in mongo.results]
     #else:
      #   mongo.collection.insert_one({'id': update.message.text, 'pw': ' '})
@@ -48,7 +47,6 @@ def ids(update, context,):
 def echo(update, context):
     """Echo the user message."""
     print(update.message.chat_id)
-    ff = update.message.text
     update.message.reply_text(update.message.text)
 
 
