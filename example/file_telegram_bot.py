@@ -28,29 +28,24 @@ cur_dir = cur_dir.resolve()
 def start(update, context):
     """Send a message when the command /start is issued."""
     update.message.reply_text("아이디를 입력해주세요. ex) /id ")
-
-'''
-def id(update, context):
-    LOGIN_ID = update.message.Get()
-    update.message.reply_text("비밀번호를 입력해주세요. ex) /pw 비밀번호 ")
-
-def pw(update, context):
-    LOGIN_PW = update.message.Get()
-    update.message.reply_text("성공적입니다.")
-'''
-'''def help(update, context):
-    """Send a message when the command /help is issued."""
-    update.message.reply_text('Help!')'''
-
-
-
-def ids(update, context,):
-    idf = collection.find_one({"id" : {"$eq":update.message.text}})
+    idi = collection.find_one({"id" : {"$eq":update.message.text}})
     if idf != None:
         print(idf["id"])
     else:
         collection.insert_one({'id': update.message.text})
         print("hi")
+
+    update.message.reply_text("비밀번호를 입력해주세요. ex) /pw 비밀번호 ")
+    idp = collection.find_one({"pw" : {"$eq":update.message.text}})
+    if idf != None:
+        print(idf["pw"])
+    else:
+        collection.insert_one({'pw': update.message.text})
+        print("ho")
+
+def help(update, context):
+    """Send a message when the command /help is issued."""
+    update.message.reply_text('Help!')
 
 def echo(update, context):
     """Echo the user message."""
@@ -65,7 +60,7 @@ def error(update, context):
 
 
 def _list(update, context):
-    update.message.reply_text(mong)
+    update.message.reply_text(collection.find_one({"내용"}))
 
 def _parent(update, context):
     global cur_dir
@@ -119,7 +114,7 @@ def main():
     #dp.add_handler(CommandHandler("pw", pw))
 
     # on noncommand i.e message - echo the message on Telegram
-    dp.add_handler(MessageHandler(Filters.text, ids))
+    dp.add_handler(MessageHandler(Filters.text, echo))
 
     # log all errors
     dp.add_error_handler(error)
