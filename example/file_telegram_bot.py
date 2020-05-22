@@ -4,6 +4,7 @@ import logging
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 
 from instance.credential import *
+import mongo
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -21,7 +22,7 @@ cur_dir = cur_dir.resolve()
 # update. Error handlers also receive the raised TelegramError object in error.
 def start(update, context):
     """Send a message when the command /start is issued."""
-    update.message.reply_text("아이디를 입력해주세요. ex) /id 아이디 ")
+    update.message.reply_text("아이디를 입력해주세요. ex) /id ")
 '''
 def id(update, context):
     LOGIN_ID = update.message.Get()
@@ -31,10 +32,18 @@ def pw(update, context):
     LOGIN_PW = update.message.Get()
     update.message.reply_text("성공적입니다.")
 '''
-def help(update, context):
+'''def help(update, context):
     """Send a message when the command /help is issued."""
-    update.message.reply_text('Help!')
+    update.message.reply_text('Help!')'''
 
+def ids(update, context,):
+    idf = mongo.collection.find({"id" : {"$eq":update.message.text}})
+    if idf == True:
+        #print(idf)
+    [print(mongo.results) for mongo.results in mongo.results]
+    #else:
+     #   mongo.collection.insert_one({'id': update.message.text, 'pw': ' '})
+    #print(update.message.chat_id)
 
 def echo(update, context):
     """Echo the user message."""
@@ -106,7 +115,7 @@ def main():
     #dp.add_handler(CommandHandler("pw", pw))
 
     # on noncommand i.e message - echo the message on Telegram
-    dp.add_handler(MessageHandler(Filters.text, echo))
+    dp.add_handler(MessageHandler(Filters.text, ids))
 
     # log all errors
     dp.add_error_handler(error)

@@ -19,7 +19,7 @@ from instance.credential import *
 
 options = Options()
 options.headless = False
-browser = webdriver.Chrome(executable_path="./chromedriver.exe", options=options)
+browser = webdriver.Chrome(executable_path="./chromedriver", options=options)
 
 browser.get("https://hisnet.handong.edu/login/login.php")
 

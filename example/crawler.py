@@ -25,7 +25,7 @@ class Crawler(BehaviorModelExecutor):
     def output(self):
         if self._cur_state == "PROCESS":
             # if homework exist
-            example1.main()
+            example1.main(self)
             print("!!!")
             
         return None
