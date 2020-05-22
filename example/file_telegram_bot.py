@@ -1,5 +1,6 @@
 import logging
 import pymongo
+import example1
 
 #import example1
 
@@ -60,7 +61,13 @@ def error(update, context):
 
 
 def _list(update, context):
-    update.message.reply_text(collection.find_one({'내용'}))
+    example1.main()
+    update.message.reply_text(collection.find_one({'게시판'}))
+
+def _HW(update, context):
+    update.message.reply_text(collection.find_one({'과제'}))
+    example1.main()
+
 
 def _parent(update, context):
     global cur_dir

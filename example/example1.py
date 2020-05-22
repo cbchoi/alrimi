@@ -15,13 +15,20 @@ from selenium.common.exceptions import TimeoutException
 
 from urllib import parse
 from instance.credential import *
-import mongo 
+import pymongo
+
+
+conn = pymongo.MongoClient('mongodb://localhost:27017')
+db = conn.get_database('mongo_db')
+collection = db.get_collection('customer')
 
 options = Options()
 options.headless = False
 browser = webdriver.Chrome(executable_path="./chromedriver", options=options)
+LOGIN_ID = collection.find_one({"id"})
+LOGIN_PW = collection.find_one({"pw"})
 
-browser.get("https://hisnet.handong.edu/login/login.php")
+#browser.get("https://hisnet.handong.edu/login/login.php")
 
 # python_input.py
 #LOGIN_ID = input("아이디를 입력해주세요.")
@@ -29,12 +36,14 @@ browser.get("https://hisnet.handong.edu/login/login.php")
 
 #print("{name}님 환영합니다.".format(name=LOGIN_ID))
 
-def first():
+def first(LOGIN_ID, LOGIN_PW):
+	browser.get("https://hisnet.handong.edu/login/login.php")
+	time.sleep(2)
 	print('!!!')
-	browser.find_element_by_name('id').send_keys()
+	browser.find_element_by_name('id').send_keys(LOGIN_ID)
 	browser.implicitly_wait(3)
 	time.sleep(1)
-	browser.find_element_by_name('password').send_keys()
+	browser.find_element_by_name('password').send_keys(LOGIN_PW)
 	browser.implicitly_wait(3)
 	time.sleep(1)
 	browser.find_element_by_name('login').submit()
@@ -110,7 +119,7 @@ def end(browser):
 #/html/body/table[1]/tbody/tr[2]/td/table/tbody/tr/td[3]/table/tbody/tr[4]/td/table/tbody/tr[1]
 
 def main(browser):
-	first('loveetls', 'sit32004')
+	first(LOGIN_ID, LOGIN_PW)
 	list(browser)
 	list_all(browser)
 	HW(browser)
@@ -118,4 +127,4 @@ def main(browser):
 	end(browser)
 	mondb(list(browser),HW(browser))
 
-main(browser)
+#main(browser)
