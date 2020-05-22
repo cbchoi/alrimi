@@ -1,5 +1,4 @@
 import time
-#import file_telegram_bot
 
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -30,12 +29,12 @@ browser.get("https://hisnet.handong.edu/login/login.php")
 
 #print("{name}님 환영합니다.".format(name=LOGIN_ID))
 
-def first(LOGIN_ID, LOGIN_PW):
+def first():
 	print('!!!')
-	browser.find_element_by_name('id').send_keys(LOGIN_ID)
+	browser.find_element_by_name('id').send_keys()
 	browser.implicitly_wait(3)
 	time.sleep(1)
-	browser.find_element_by_name('password').send_keys(LOGIN_PW)
+	browser.find_element_by_name('password').send_keys()
 	browser.implicitly_wait(3)
 	time.sleep(1)
 	browser.find_element_by_name('login').submit()
@@ -49,10 +48,9 @@ def list(browser):
 	notice = browser.find_element_by_xpath('//*[@id="tr_box_32"]/table/tbody')
 	time.sleep(1)
 	print(notice.text)
-
+	
 	return notice.text
 
-	
 	
 
 # 과제정보
@@ -65,7 +63,6 @@ def HW(browser):
 	print(hw.text)
 
 	return hw.text
-
 
 # 과제 상세리스트
 def HW_all(browser):
@@ -86,6 +83,15 @@ def list_all(browser):
 	time.sleep(2)
 	browser.find_element_by_xpath('/html/body/table[2]/tbody/tr/td[3]/table/tbody/tr[1]/td[2]').click()
 	time.sleep(2)
+	number = browser.find_element_by_xpath('/html/body/table[1]/tbody/tr[2]/td/table/tbody/tr/td[3]/table/tbody/tr[4]/td/table/tbody/tr[4]/td/table/tbody')
+	number_text = number.text
+	number_list = number_text.split('ㆍ 0')
+	print(number_list)
+	for i in number_list:
+		browser.get(f"https://hisnet.handong.edu/cis/list.php?dflag=&Page={i}&Board=KYOM_NOTICE&CIS_GWAMOK=&AG=1")
+		notice_d1 = browser.find_element_by_xpath('/html/body/table[1]/tbody/tr[2]/td/table/tbody/tr/td[3]/table/tbody/tr[4]/td/table/tbody/tr[1]')
+		print(notice_d1.text)
+	#https://hisnet.handong.edu/cis/list.php?dflag=&Page=1&Board=KYOM_NOTICE&CIS_GWAMOK=&AG=1
 	notice_d1 = browser.find_element_by_xpath('/html/body/table[1]/tbody/tr[2]/td/table/tbody/tr/td[3]/table/tbody/tr[4]/td/table/tbody/tr[1]')
 	print(notice_d1.text)
 
@@ -111,6 +117,5 @@ def main(browser):
 	HW_all(browser)
 	end(browser)
 	mondb(list(browser),HW(browser))
-
 
 main(browser)

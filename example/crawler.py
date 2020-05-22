@@ -13,7 +13,7 @@ class Crawler(BehaviorModelExecutor):
         # Open CSV
         self.init_state("IDLE")
         self.insert_state("IDLE", Infinite)
-        self.insert_state("PROCESS", 3)
+        self.insert_state("PROCESS", REQUEST_FREQ)
 
         self.insert_input_port("report")
 
