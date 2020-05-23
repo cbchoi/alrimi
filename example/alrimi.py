@@ -2,14 +2,12 @@ import logging
 import pymongo
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from instance.credential import *
-
-
-
-conn = pymongo.MongoClient('mongodb://localhost:27017')
-db = conn.get_database('mongo_db')
-collection = db.get_collection('1166940643')
+import example1
 
 #dic={'id':'loveetls', 'pw' : 'sit32004', '게시판' : '...', '과제' : '...'}
+conn = pymongo.MongoClient('mongodb://localhost:27017')
+db = conn.get_database('mongo_db')
+collection = db.get_collection(update.message.chat_id)
 
 def go(update, context):
     update.message.reply_text('아이디와 비밀번호를 입력해 주세요. ex) /start id pw')
@@ -28,9 +26,12 @@ def start(update, context):
     else:
         collection.insert_one({"id" : info_1[1], "pw" : info_1[2]})
         print("hi")
+        #updater.bot.sendMessge(1166940643, "ho")
 
-    return info_1
+    example1.main(info_1[1], info_1[2])
 
+
+    
     #에러 뜰거 생각하
 
 def echo(update, context):
@@ -45,15 +46,13 @@ def error(update, context):
 
 
 def _list(update, context):
-    try:
-        notice = collection.find_one({"id" : "h"},{"_id":False,"pw":True})
-        update.message.reply_text(notice)
-    except:
-        update.message.reply_text("worng")
+    notice = collection.find_one({"id" : LOGIN_ID },{"_id":False,"게시판":True})
+    update.message.reply_text(notice)
    
 
 def _HW(update, context):
-    update.message.reply_text(collection.find_one({'과제'}))
+    home = collection.find_one({"id" : LOGIN_ID},{"_id":False,"과제":True})
+    update.message.reply_text(home)
 
 
 def main():
@@ -80,7 +79,7 @@ def main():
     # log all errors
     dp.add_error_handler(error)
 
-    #updater.bot.send_message(1235556245, '111')
+    #updater.bot.send_message(1166940643, '111')
     # Start the Bot
     updater.start_polling()
 

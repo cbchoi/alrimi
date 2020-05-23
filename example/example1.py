@@ -20,15 +20,15 @@ import pymongo
 
 conn = pymongo.MongoClient('mongodb://localhost:27017')
 db = conn.get_database('mongo_db')
-collection = db.get_collection('customer')
+collection = db.get_collection('1166940643')
 
 options = Options()
 options.headless = False
 browser = webdriver.Chrome(executable_path="./chromedriver", options=options)
-LOGIN_ID = collection.find_one({"id"})
-LOGIN_PW = collection.find_one({"pw"})
+LOGIN_ID = collection.find_one(["id"])
+LOGIN_PW = collection.find_one(["pw"])
 
-#browser.get("https://hisnet.handong.edu/login/login.php")
+browser.get("https://hisnet.handong.edu/login/login.php")
 
 # python_input.py
 #LOGIN_ID = input("아이디를 입력해주세요.")
@@ -37,7 +37,7 @@ LOGIN_PW = collection.find_one({"pw"})
 #print("{name}님 환영합니다.".format(name=LOGIN_ID))
 
 def first(LOGIN_ID, LOGIN_PW):
-	browser.get("https://hisnet.handong.edu/login/login.php")
+	#browser.get("https://hisnet.handong.edu/login/login.php")
 	time.sleep(2)
 	print('!!!')
 	browser.find_element_by_name('id').send_keys(LOGIN_ID)
@@ -49,6 +49,8 @@ def first(LOGIN_ID, LOGIN_PW):
 	browser.find_element_by_name('login').submit()
 	browser.implicitly_wait(3)
 
+	return LOGIN_ID
+
 # 게시판 글 읽기
 def list(browser):
 	browser.get("https://hisnet.handong.edu/for_student/main.php")
@@ -57,7 +59,7 @@ def list(browser):
 	notice = browser.find_element_by_xpath('//*[@id="tr_box_32"]/table/tbody')
 	time.sleep(1)
 	print(notice.text)
-	
+
 	return notice.text
 
 	
@@ -105,10 +107,10 @@ def list_all(browser):
 	print(notice_d1.text)
 
 #browser.find_element_by_class_name(cls_AlignLeft listBody)
-def mondb(list, hw):
-	mongo.collection.insert_one({'게시판':list}, {'과제':hw})
-	result = mongo.collection.find()
-	[print(result) for result in result]
+def mondb(LOGIN_ID, list, hw):
+	collection.update({'id' : LOGIN_ID}, {"$set" :{'게시판':list}})
+	collection.update({'id' : LOGIN_ID}, {"$set" :{'과제':hw}})
+
 
 # 쿠키 지우기
 def end(browser):
@@ -118,13 +120,13 @@ def end(browser):
 	print("clear!")
 #/html/body/table[1]/tbody/tr[2]/td/table/tbody/tr/td[3]/table/tbody/tr[4]/td/table/tbody/tr[1]
 
-def main(browser):
-	first(LOGIN_ID, LOGIN_PW)
+def main(LOGIN_ID, LOGIN_PW):
+	first(LOGIN_ID, LOGIN_PW )
 	list(browser)
 	list_all(browser)
 	HW(browser)
 	HW_all(browser)
+	mondb(LOGIN_ID, list(browser),HW(browser))
 	end(browser)
-	mondb(list(browser),HW(browser))
 
 #main(browser)
