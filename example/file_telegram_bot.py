@@ -4,10 +4,10 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from instance.credential import *
 
 
-
+telegramid = 'i'
 conn = pymongo.MongoClient('mongodb://localhost:27017')
 db = conn.get_database('mongo_db')
-collection = db.get_collection('1166940643')
+collection = db.get_collection(telegramid)
 
 #dic={'id':'loveetls', 'pw' : 'sit32004', '게시판' : '...', '과제' : '...'}
 

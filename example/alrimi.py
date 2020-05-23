@@ -4,31 +4,43 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from instance.credential import *
 import example1
 
-#dic={'id':'loveetls', 'pw' : 'sit32004', '게시판' : '...', '과제' : '...'}
+telegramid = "i"
+user = None
 conn = pymongo.MongoClient('mongodb://localhost:27017')
 db = conn.get_database('mongo_db')
-collection = db.get_collection(update.message.chat_id)
+collection = db.get_collection(telegramid)
 
+
+
+#진짜 시작
 def go(update, context):
     update.message.reply_text('아이디와 비밀번호를 입력해 주세요. ex) /start id pw')
+    global telegramid
+    telegramid = update.message.chat_id
     #collection.insert_one({'id':'id', 'pw' : 'pw', '게시판' : '...', '과제' : '...'})
+
 
 def start(update, context):
 
     info = update.message.text
     info_1 = info.split(' ')
     print(update.message.chat_id)
+    global user
+    user = info_1[1]
 
-    idi = collection.find_one({"id" : info_1[1], "pw" : info_1[2]})
+    idi = collection.find_one({"id" : user, "pw" : info_1[2]})
     if idi != None:
         print(idi)
 
     else:
-        collection.insert_one({"id" : info_1[1], "pw" : info_1[2]})
+        collection.insert_one({"id" : user, "pw" : info_1[2]})
         print("hi")
         #updater.bot.sendMessge(1166940643, "ho")
 
-    example1.main(info_1[1], info_1[2])
+    example1.main(user, info_1[2])
+
+
+
 
 
     
@@ -46,12 +58,12 @@ def error(update, context):
 
 
 def _list(update, context):
-    notice = collection.find_one({"id" : LOGIN_ID },{"_id":False,"게시판":True})
+    notice = collection.find_one({"id" : user },{"_id":False,"게시판":True})
     update.message.reply_text(notice)
    
 
 def _HW(update, context):
-    home = collection.find_one({"id" : LOGIN_ID},{"_id":False,"과제":True})
+    home = collection.find_one({"id" : user},{"_id":False,"과제":True})
     update.message.reply_text(home)
 
 

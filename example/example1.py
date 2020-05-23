@@ -17,16 +17,14 @@ from urllib import parse
 from instance.credential import *
 import pymongo
 
-
+telegramid ='i'
 conn = pymongo.MongoClient('mongodb://localhost:27017')
 db = conn.get_database('mongo_db')
-collection = db.get_collection('1166940643')
+collection = db.get_collection(telegramid)
 
 options = Options()
 options.headless = False
 browser = webdriver.Chrome(executable_path="./chromedriver", options=options)
-LOGIN_ID = collection.find_one(["id"])
-LOGIN_PW = collection.find_one(["pw"])
 
 browser.get("https://hisnet.handong.edu/login/login.php")
 
