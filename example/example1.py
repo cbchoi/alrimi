@@ -47,8 +47,6 @@ def first(LOGIN_ID, LOGIN_PW):
 	browser.find_element_by_name('login').submit()
 	browser.implicitly_wait(3)
 
-	return LOGIN_ID
-
 # 게시판 글 읽기
 def list(browser):
 	browser.get("https://hisnet.handong.edu/for_student/main.php")
@@ -105,9 +103,20 @@ def list_all(browser):
 	print(notice_d1.text)
 
 #browser.find_element_by_class_name(cls_AlignLeft listBody)
-def mondb(LOGIN_ID, list, hw):
-	collection.update({'id' : LOGIN_ID}, {"$set" :{'게시판':list}})
-	collection.update({'id' : LOGIN_ID}, {"$set" :{'과제':hw}})
+def mondb(LOGIN_ID, ilist, hw):
+	collection.update({'id' : LOGIN_ID}, {"$unset":{"과제": True}})
+	collection.update({'id' : LOGIN_ID}, {"$set":{"과제": ilist}})
+
+	collection.update({'id' : LOGIN_ID}, {"$unset":{"게시판": True}})
+	collection.update({'id' : LOGIN_ID}, {"$set":{"게시판": ilist}})
+	'''if check1 != ilist:
+		collection.update({'id' : LOGIN_ID}, {"$set":{"게시판":ilst}})
+		print('ok')
+
+	else:
+		collection.update({'id' : LOGIN_ID}, {"$unset":{"게시판": check1}})
+		collection.update({'id' : LOGIN_ID}, {"$set":{"게시판": ilst}})
+		print("yes")'''
 
 
 # 쿠키 지우기
@@ -121,9 +130,9 @@ def end(browser):
 def main(LOGIN_ID, LOGIN_PW):
 	first(LOGIN_ID, LOGIN_PW )
 	list(browser)
-	list_all(browser)
+	#list_all(browser)
 	HW(browser)
-	HW_all(browser)
+	#HW_all(browser)
 	mondb(LOGIN_ID, list(browser),HW(browser))
 	end(browser)
 

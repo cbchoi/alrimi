@@ -4,19 +4,19 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from instance.credential import *
 import example1
 
-telegramid = "i"
+
 user = None
 conn = pymongo.MongoClient('mongodb://localhost:27017')
 db = conn.get_database('mongo_db')
-collection = db.get_collection(telegramid)
+collection = db.get_collection('i')
+print()
+
 
 
 
 #진짜 시작
 def go(update, context):
     update.message.reply_text('아이디와 비밀번호를 입력해 주세요. ex) /start id pw')
-    global telegramid
-    telegramid = update.message.chat_id
     #collection.insert_one({'id':'id', 'pw' : 'pw', '게시판' : '...', '과제' : '...'})
 
 
@@ -37,11 +37,7 @@ def start(update, context):
         print("hi")
         #updater.bot.sendMessge(1166940643, "ho")
 
-    example1.main(user, info_1[2])
-
-
-
-
+    #example1.main(user, info_1[2])
 
     
     #에러 뜰거 생각하
@@ -73,6 +69,7 @@ def main():
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
     updater = Updater(TELEGRAM_TOKEN, use_context=True)
+
 
 
 
