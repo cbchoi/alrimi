@@ -54,7 +54,7 @@ def _list(update, context):
 
 def _HW(update, context):
     home = collection.find_one({"chat_id" : update.message.chat_id}, {"_id":False,"과제":True})
-    update.message.reply_text(notice["과"])
+    update.message.reply_text(notice['과제'])
 
 
 def main():

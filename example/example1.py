@@ -104,7 +104,7 @@ def list_all(browser):
 #browser.find_element_by_class_name(cls_AlignLeft listBody)
 def mondb(LOGIN_ID, ilist, hw):
 	collection.update({'id' : LOGIN_ID}, {"$set":{"게시판": ilist}})
-	collection.update({'id' : LOGIN_ID}, {"$set":{"과제": t1}})
+	collection.update({'id' : LOGIN_ID}, {"$set":{"과제": hw}})
 
 
 # 쿠키 지우기
