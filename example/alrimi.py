@@ -9,7 +9,7 @@ import example1
 user = None
 conn = pymongo.MongoClient('mongodb://localhost:27017')
 db = conn.get_database('mongo_db')
-collection = db.get_collection('Hisnet')
+collection = db.get_collection("Hisnet")
 
 #진짜 시작
 def go(update, context):
@@ -20,7 +20,6 @@ def go(update, context):
 def start(update, context):
     info = update.message.text
     info_1 = info.split(' ')
-    print(update.message.chat_id)
     global user
     user = info_1[1]
 
@@ -29,7 +28,7 @@ def start(update, context):
         print(idi)
 
     else:
-        collection.insert_one({"id" : user, "pw" : info_1[2], "chat_id" : })
+        collection.insert_one({"id" : user, "pw" : info_1[2], "chat_id" : update.message.chat_id})
         print("hi")
 
     example1.main(user, info_1[2])
@@ -49,15 +48,13 @@ def error(update, context):
 
 
 def _list(update, context): 
-    print(user)
-    print("!!!")
-    notice = collection.find_one({"id" : "dreamjane921"}, {"_id":False,"게시판":True})
+    notice = collection.find_one({"chat_id" : update.message.chat_id}, {"_id":False,"게시판":True})
     update.message.reply_text(notice["게시판"])
    
 
 def _HW(update, context):
-    home = collection.find_one({"id" : user}, {"_id":False,"과제":True})
-    update.message.reply_text(home["과제"])
+    home = collection.find_one({"chat_id" : update.message.chat_id}, {"_id":False,"과제":True})
+    update.message.reply_text(notice["과"])
 
 
 def main():
@@ -67,9 +64,6 @@ def main():
     # Post version 12 this will no longer be necessary
     updater = Updater(TELEGRAM_TOKEN, use_context=True)
     updates = updates = telegram.Bot(TELEGRAM_TOKEN).get_updates()
-
-
-
 
 
     # Get the dispatcher to register handlers

@@ -50,10 +50,10 @@ def first(LOGIN_ID, LOGIN_PW):
 # 게시판 글 읽기
 def ilist(browser):
 	browser.get("https://hisnet.handong.edu/for_student/main.php")
-	time.sleep(1)
+	time.sleep(0.3)
 	browser.find_element_by_xpath('//*[@id="td_box32"]').click()
 	notice = browser.find_element_by_xpath('//*[@id="tr_box_32"]/table/tbody')
-	time.sleep(1)
+	time.sleep(0.3)
 	print(notice.text)
 
 	return notice.text
@@ -62,10 +62,10 @@ def ilist(browser):
 # 과제정보
 def HW(browser):
 	browser.get("https://hisnet.handong.edu/for_student/main.php")
-	time.sleep(2)
+	time.sleep(0.5)
 	browser.find_element_by_xpath('//*[@id="td_box34"]').click()
 	hw = browser.find_element_by_xpath('//*[@id="tr_box_34"]/table/tbody')
-	time.sleep(2)
+	time.sleep(0.5)
 	print(hw.text)
 
 	return hw.text
@@ -104,9 +104,8 @@ def list_all(browser):
 #browser.find_element_by_class_name(cls_AlignLeft listBody)
 def mondb(LOGIN_ID, ilist, hw):
 	collection.update({'id' : LOGIN_ID}, {"$set":{"게시판": ilist}})
-	print("@@")
-	collection.update({'id' : LOGIN_ID}, {"$set":{"과제": hw}})
-	print("@@")
+	collection.update({'id' : LOGIN_ID}, {"$set":{"과제": t1}})
+
 
 # 쿠키 지우기
 def end(browser):

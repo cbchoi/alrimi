@@ -13,7 +13,7 @@ collection = db.get_collection('Hisnet')
 #check2 = collection.find_one({'id' : LOGIN_ID}, {"_id":False,"과제":True})
 #if check1 != ilist:
 #collection.update({'chat_id': '1166940643'}, {"$set":{'Hi':'True'}})
-#collection.update({'id' :'dreamjane921'}, {"$set":{"88":'32004'}})
+#collection.update({'id' :'dreamjane921'}, {"$set":{"게시판":'32004'}})
 #print('ok')
 '''else:
 collection.update({'id' : LOGIN_ID}, {"$unset":{"게시판": check1}})
@@ -26,6 +26,9 @@ else:
 collection.update({'id' : LOGIN_ID}, {"$unset":{"게시판": check1}})
 collection.update({'id' : LOGIN_ID}, {"$set":{"게시판": ilst}})
 print("yes")'''
+home = collection.find_one({"id" : "dreamjane921"}, {"_id":False,"과제":True})
+for i in home['과제']:
+	print(i)
 
 results = collection.find()
 #collection.drop()
