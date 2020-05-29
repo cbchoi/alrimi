@@ -28,6 +28,7 @@ browser = webdriver.Chrome(executable_path="./chromedriver", options=options)
 
 browser.get("https://hisnet.handong.edu/login/login.php")
 
+
 # python_input.py
 #LOGIN_ID = input("아이디를 입력해주세요.")
 #LOGIN_PW = input("비밀번호를 입력해주세요.")
@@ -36,19 +37,19 @@ browser.get("https://hisnet.handong.edu/login/login.php")
 
 def first(LOGIN_ID, LOGIN_PW):
 	#browser.get("https://hisnet.handong.edu/login/login.php")
-	time.sleep(2)
+	time.sleep(0.3)
 	print('!!!')
 	browser.find_element_by_name('id').send_keys(LOGIN_ID)
 	browser.implicitly_wait(3)
-	time.sleep(1)
+	time.sleep(0.3)
 	browser.find_element_by_name('password').send_keys(LOGIN_PW)
 	browser.implicitly_wait(3)
-	time.sleep(1)
+	time.sleep(0.3)
 	browser.find_element_by_name('login').submit()
 	browser.implicitly_wait(3)
 
 # 게시판 글 읽기
-def ilist(browser):
+def list(browser):
 	browser.get("https://hisnet.handong.edu/for_student/main.php")
 	time.sleep(0.3)
 	browser.find_element_by_xpath('//*[@id="td_box32"]').click()
@@ -62,66 +63,96 @@ def ilist(browser):
 # 과제정보
 def HW(browser):
 	browser.get("https://hisnet.handong.edu/for_student/main.php")
-	time.sleep(0.5)
+	time.sleep(0.3)
 	browser.find_element_by_xpath('//*[@id="td_box34"]').click()
 	hw = browser.find_element_by_xpath('//*[@id="tr_box_34"]/table/tbody')
-	time.sleep(0.5)
+	time.sleep(0.3)
 	print(hw.text)
 
 	return hw.text
 
+
 # 과제 상세리스트
 def HW_all(browser):
 	browser.get("https://hisnet.handong.edu/for_student/main.php")
-	time.sleep(1)
+	time.sleep(0.3)
 	browser.find_element_by_xpath('//*[@id="td_box34"]').click()
-	time.sleep(1)
+	time.sleep(0.3)
 	browser.find_element_by_xpath('/html/body/table[2]/tbody/tr/td[3]/table/tbody/tr[1]/td[2]').click()
 	hw_d = browser.find_element_by_xpath('//*[@id="att_list"]/tbody')
-	time.sleep(2)
+	time.sleep(0.3)
 	print(hw_d.text)
+
+	return hw_d.text
+
 
 # 게시판 상세리스트
 def list_all(browser):
 	browser.get("https://hisnet.handong.edu/for_student/main.php")
-	time.sleep(2)
+	time.sleep(0.3)
 	browser.find_element_by_xpath('//*[@id="td_box32"]').click()
-	time.sleep(2)
+	time.sleep(0.3)
 	browser.find_element_by_xpath('/html/body/table[2]/tbody/tr/td[3]/table/tbody/tr[1]/td[2]').click()
-	time.sleep(2)
+	time.sleep(0.3)
 	number = browser.find_element_by_xpath('/html/body/table[1]/tbody/tr[2]/td/table/tbody/tr/td[3]/table/tbody/tr[4]/td/table/tbody/tr[4]/td/table/tbody')
 	number_text = number.text
 	number_list = number_text.split('ㆍ 0')
+	notice_d = ''
 	print(number_list)
 	for i in number_list:
 		browser.get(f"https://hisnet.handong.edu/cis/list.php?dflag=&Page={i}&Board=KYOM_NOTICE&CIS_GWAMOK=&AG=1")
 		notice_d1 = browser.find_element_by_xpath('/html/body/table[1]/tbody/tr[2]/td/table/tbody/tr/td[3]/table/tbody/tr[4]/td/table/tbody/tr[1]')
 		print(notice_d1.text)
+		notice_d = notice_d + notice_d1.text
 	#https://hisnet.handong.edu/cis/list.php?dflag=&Page=1&Board=KYOM_NOTICE&CIS_GWAMOK=&AG=1
-	notice_d1 = browser.find_element_by_xpath('/html/body/table[1]/tbody/tr[2]/td/table/tbody/tr/td[3]/table/tbody/tr[4]/td/table/tbody/tr[1]')
-	print(notice_d1.text)
+	#notice_d1 = browser.find_element_by_xpath('/html/body/table[1]/tbody/tr[2]/td/table/tbody/tr/td[3]/table/tbody/tr[4]/td/table/tbody/tr[1]')
+
+	return notice_d
 
 #browser.find_element_by_class_name(cls_AlignLeft listBody)
-def mondb(LOGIN_ID, ilist, hw):
-	collection.update({'id' : LOGIN_ID}, {"$set":{"게시판": ilist}})
-	collection.update({'id' : LOGIN_ID}, {"$set":{"과제": hw}})
+def mondb(LOGIN_ID, list, hw):
+	co = collection.find_one({'게시판' : { "$exists" : True}})
+	ho = collection.find_one({'과제' : { "$exists" : True}})
+	
+	if co != None :
+		co1 = collection.find_one({"id" : LOGIN_ID}, {"_id":False,"게시판":True})
+		co2 = (co1["게시판"])
+		collection.update({'id' : LOGIN_ID}, {"$set":{"게시판": ilist}})
+		print("update")
+		v = 1
+	else: 
+		collection.update({'id' : LOGIN_ID}, {"$set":{"게시판": ilist}})
+		print("hi")
+		v = 0
 
-
+	if ho != None:
+		ho1 = collection.find_one({"id" : LOGIN_ID}, {"_id":False,"과제":True})
+		ho2 = (co1["과제"])
+		collection.update({'id' : LOGIN_ID}, {"$set":{"과제": ilist}})
+		print("update")
+		v = 1
+	else: 
+		collection.update({'id' : LOGIN_ID}, {"$set":{"과제": ilist}})
+		print("hi")
+		v = 0
+	
 # 쿠키 지우기
 def end(browser):
-	time.sleep(2)
+	time.sleep(0.3)
 	browser.delete_all_cookies()
-	time.sleep(5)
+	time.sleep(2)
 	print("clear!")
 #/html/body/table[1]/tbody/tr[2]/td/table/tbody/tr/td[3]/table/tbody/tr[4]/td/table/tbody/tr[1]
 
 def main(LOGIN_ID, LOGIN_PW):
 	first(LOGIN_ID, LOGIN_PW )
-	ilist(browser)
-	#list_all(browser)
+	list(browser)
 	HW(browser)
+	#list_all(browser)
 	#HW_all(browser)
-	mondb(LOGIN_ID, ilist(browser), HW(browser))
+	mondb(LOGIN_ID, list(browser), HW(browser))
 	end(browser)
 
 #main(browser)
+#if __name__ == '__main__':
+#    main()

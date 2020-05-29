@@ -26,9 +26,6 @@ else:
 collection.update({'id' : LOGIN_ID}, {"$unset":{"게시판": check1}})
 collection.update({'id' : LOGIN_ID}, {"$set":{"게시판": ilst}})
 print("yes")'''
-home = collection.find_one({"id" : "dreamjane921"}, {"_id":False,"과제":True})
-for i in home['과제']:
-	print(i)
 
 results = collection.find()
 #collection.drop()
@@ -36,5 +33,5 @@ results = collection.find()
 #print(notice)
 #re = show collection
 
-#[print(results) for results in results]
+[print(results) for results in results]
 #print(check1)

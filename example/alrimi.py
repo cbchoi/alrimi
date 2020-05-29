@@ -3,10 +3,11 @@ import telegram
 import pymongo
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 from instance.credential import *
-import example1
-
+#import example1
+import crawler
 
 user = None
+user_pw = None
 conn = pymongo.MongoClient('mongodb://localhost:27017')
 db = conn.get_database('mongo_db')
 collection = db.get_collection("Hisnet")
@@ -20,21 +21,26 @@ def go(update, context):
 def start(update, context):
     info = update.message.text
     info_1 = info.split(' ')
-    global user
+    #global user_pw
+    user_pw = info_1[2]
+    #global user
     user = info_1[1]
 
-    idi = collection.find_one({"id" : user, "pw" : info_1[2]})
+    idi = collection.find_one({"id" : user, "pw" : user_pw})
     if idi != None:
         print(idi)
 
     else:
-        collection.insert_one({"id" : user, "pw" : info_1[2], "chat_id" : update.message.chat_id})
+        collection.insert_one({"id" : user, "pw" : user_pw, "chat_id" : update.message.chat_id})
         print("hi")
 
-    example1.main(user, info_1[2])
+    #chatid1 = collection.find_one({"chat_id" : update.message.chat_id}, {"_id":False,"chat_id":True})
+    #chatid = chatid1["chat_id"]
+
+    #example1.main(user, user_pw)
 
     
-    #에러 뜰거 생각하
+    #에러 뜰거 생각
 
 def echo(update, context):
     """Echo the user message."""
@@ -50,12 +56,29 @@ def error(update, context):
 def _list(update, context): 
     notice = collection.find_one({"chat_id" : update.message.chat_id}, {"_id":False,"게시판":True})
     update.message.reply_text(notice["게시판"])
-   
+
+def _list_all(update, context): 
+    notice_all = collection.find_one({"chat_id" : update.message.chat_id}, {"_id":False,"전체게시판":True})
+    update.message.reply_text(notice_all["전체게시판"])
 
 def _HW(update, context):
     home = collection.find_one({"chat_id" : update.message.chat_id}, {"_id":False,"과제":True})
-    update.message.reply_text(notice['과제'])
+    update.message.reply_text(home['과제'])
 
+def _HW_all(update, context):
+    home_all = collection.find_one({"chat_id" : update.message.chat_id}, {"_id":False,"전체과제":True})
+    update.message.reply_text(home_all['전체과제'])
+
+'''
+def chatid(update, context):
+    chatid = update.message.chat_id
+    #update.bot.send_message(chatid, '111')
+    return chatid
+
+def start_command(update, context):
+    id = update.message.chat_id
+    nickname=check_nickname(update, context)
+'''
 
 def main():
     """Start the bot."""
@@ -63,7 +86,7 @@ def main():
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
     updater = Updater(TELEGRAM_TOKEN, use_context=True)
-    updates = updates = telegram.Bot(TELEGRAM_TOKEN).get_updates()
+    updates = telegram.Bot(TELEGRAM_TOKEN).get_updates()
 
 
     # Get the dispatcher to register handlers
@@ -73,7 +96,9 @@ def main():
     dp.add_handler(CommandHandler("go", go))
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("list", _list))
+    dp.add_handler(CommandHandler("list_all", _list_all))
     dp.add_handler(CommandHandler("hw", _HW))
+    dp.add_handler(CommandHandler("hw_all", _HW_all))
 
     # on noncommand i.e message - echo the message on Telegram
     dp.add_handler(MessageHandler(Filters.text, echo))
@@ -81,7 +106,6 @@ def main():
     # log all errors
     dp.add_error_handler(error)
 
-    #updater.bot.send_message(1166940643, '111')
     # Start the Bot
     updater.start_polling()
 

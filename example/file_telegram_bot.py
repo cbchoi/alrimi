@@ -31,7 +31,7 @@ def start(update, context):
 
     return info_1
 
-    #에러 뜰거 생각하
+    #에러 뜰거 생각
 
 def echo(update, context):
     """Echo the user message."""
@@ -50,11 +50,20 @@ def _list(update, context):
         update.message.reply_text(notice)
     except:
         update.message.reply_text("worng")
+
+def _list_all(update, context):
+    try:
+        notice_all = collection.find_one({"id" : "h"},{"_id":False,"pw":True})
+        update.message.reply_text(notice_all)
+    except:
+        update.message.reply_text("worng")
    
 
 def _HW(update, context):
     update.message.reply_text(collection.find_one({'과제'}))
 
+def _HW_all(update, context):
+    update.message.reply_text(collection.find_one({'전체과제'}))
 
 def main():
     """Start the bot."""
@@ -72,7 +81,9 @@ def main():
     dp.add_handler(CommandHandler("go", go))
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("list", _list))
+    dp.add_handler(CommandHandler("list_all", _list_all))
     dp.add_handler(CommandHandler("hw", _HW))
+    dp.add_handler(CommandHandler("hw_all", _HW_all))
 
     # on noncommand i.e message - echo the message on Telegram
     dp.add_handler(MessageHandler(Filters.text, echo))
