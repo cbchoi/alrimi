@@ -137,7 +137,7 @@ class Crawler(BehaviorModelExecutor):
                 self.updater.bot.send_message(chatid, "update")
         else:
             self.collection.update({'id' : LOGIN_ID}, {"$set":{"게시판": notice_lst}})
-            self.updater.bot.send_message(chatid, "welcome ^^")
+            self.updater.bot.send_message(chatid, "Update ^^")
 
         ho1 = self.collection.find_one({"id" : LOGIN_ID}, {"_id":False,"과제":True})
         if ho1 != {}:
