@@ -34,10 +34,6 @@ def start(update, context):
         collection.insert_one({"id" : user, "pw" : user_pw, "chat_id" : update.message.chat_id})
         print("hi")
 
-    #chatid1 = collection.find_one({"chat_id" : update.message.chat_id}, {"_id":False,"chat_id":True})
-    #chatid = chatid1["chat_id"]
-
-    #example1.main(user, user_pw)
 
     
     #에러 뜰거 생각
@@ -68,17 +64,6 @@ def _HW(update, context):
 def _HW_all(update, context):
     home_all = collection.find_one({"chat_id" : update.message.chat_id}, {"_id":False,"전체과제":True})
     update.message.reply_text(home_all['전체과제'])
-
-'''
-def chatid(update, context):
-    chatid = update.message.chat_id
-    #update.bot.send_message(chatid, '111')
-    return chatid
-
-def start_command(update, context):
-    id = update.message.chat_id
-    nickname=check_nickname(update, context)
-'''
 
 def main():
     """Start the bot."""

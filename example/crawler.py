@@ -26,9 +26,6 @@ from selenium.common.exceptions import TimeoutException
 from urllib import parse
 import pymongo
 
-'''conn = pymongo.MongoClient('mongodb://localhost:27017')
-db = conn.get_database('mongo_db')
-collection = db.get_collection('Hisnet')'''
 
 options = Options()
 options.headless = False
@@ -76,7 +73,7 @@ class Crawler(BehaviorModelExecutor):
             # if homework exist
             # Hisnet에서 모든 document를 가져옴
             results = self.collection.find()
-            # {"id" : user, "pw" : user_pw, "chat_id"
+            # {"id" : user, "pw" : user_pw, "chat_id"}
             for result in results:
                 result['id']
                 result['pw']
@@ -129,48 +126,8 @@ class Crawler(BehaviorModelExecutor):
         return hw.text
 
 
-    # 과제 상세리스트
-    def HW_all(self, browser):
-        browser.get("https://hisnet.handong.edu/for_student/main.php")
-        time.sleep(0.3)
-        browser.find_element_by_xpath('//*[@id="td_box34"]').click()
-        time.sleep(0.3)
-        browser.find_element_by_xpath('/html/body/table[2]/tbody/tr/td[3]/table/tbody/tr[1]/td[2]').click()
-        hw_d = browser.find_element_by_xpath('//*[@id="att_list"]/tbody')
-        time.sleep(0.3)
-        print(hw_d.text)
-
-        return hw_d.text
-
-
-    # 게시판 상세리스트
-    def list_all(self, browser):
-        browser.get("https://hisnet.handong.edu/for_student/main.php")
-        time.sleep(0.3)
-        browser.find_element_by_xpath('//*[@id="td_box32"]').click()
-        time.sleep(0.3)
-        browser.find_element_by_xpath('/html/body/table[2]/tbody/tr/td[3]/table/tbody/tr[1]/td[2]').click()
-        time.sleep(0.3)
-        number = browser.find_element_by_xpath('/html/body/table[1]/tbody/tr[2]/td/table/tbody/tr/td[3]/table/tbody/tr[4]/td/table/tbody/tr[4]/td/table/tbody')
-        number_text = number.text
-        number_list = number_text.split('ㆍ 0')
-        notice_d = ''
-        print(number_list)
-        for i in number_list:
-            browser.get(f"https://hisnet.handong.edu/cis/list.php?dflag=&Page={i}&Board=KYOM_NOTICE&CIS_GWAMOK=&AG=1")
-            notice_d1 = browser.find_element_by_xpath('/html/body/table[1]/tbody/tr[2]/td/table/tbody/tr/td[3]/table/tbody/tr[4]/td/table/tbody/tr[1]')
-            print(notice_d1.text)
-            notice_d = notice_d + notice_d1.text
-        #https://hisnet.handong.edu/cis/list.php?dflag=&Page=1&Board=KYOM_NOTICE&CIS_GWAMOK=&AG=1
-        #notice_d1 = browser.find_element_by_xpath('/html/body/table[1]/tbody/tr[2]/td/table/tbody/tr/td[3]/table/tbody/tr[4]/td/table/tbody/tr[1]')
-
-        return notice_d
-
     #browser.find_element_by_class_name(cls_AlignLeft listBody)
     def mondb(self, LOGIN_ID, notice_lst, hw_lst, chatid):
-        #co = self.collection.find_one({"id" : LOGIN_ID},{'게시판' : { "$exists" : True}})
-        #ho = self.collection.find_one({"id" : LOGIN_ID},{'과제' : { "$exists" : True}})
-
 
         co1 = self.collection.find_one({"id" : LOGIN_ID}, {"_id":False,"게시판":True})
         
@@ -180,7 +137,8 @@ class Crawler(BehaviorModelExecutor):
                 self.updater.bot.send_message(chatid, "update")
         else:
             self.collection.update({'id' : LOGIN_ID}, {"$set":{"게시판": notice_lst}})
-            self.updater.bot.send_message(chatid, "first ^^")
+            self.updater.bot.send_message(chatid, "welcome ^^")
+
         ho1 = self.collection.find_one({"id" : LOGIN_ID}, {"_id":False,"과제":True})
         if ho1 != {}:
             if ho1["과제"] != hw_lst:
@@ -188,6 +146,8 @@ class Crawler(BehaviorModelExecutor):
                 self.updater.bot.send_message(chatid, "update")
         else:
             self.collection.update({'id' : LOGIN_ID}, {"$set":{"과제": hw_lst}})
+
+
                     
     # 쿠키 지우기
     def end(self, browser):
